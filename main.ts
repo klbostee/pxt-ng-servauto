@@ -1,25 +1,3 @@
-function goForward() {
-    basic.showLeds(`
-        . . # . .
-        . # # # .
-        # # . # #
-        # . . . #
-        . . . . .
-        `)
-    pins.servoWritePin(AnalogPin.P14, 90 + speed)
-    pins.servoWritePin(AnalogPin.P15, 90 - speed)
-}
-function goBackward() {
-    basic.showLeds(`
-        . . . . .
-        # . . . #
-        # # . # #
-        . # # # .
-        . . # . .
-        `)
-    pins.servoWritePin(AnalogPin.P14, 90 - speed)
-    pins.servoWritePin(AnalogPin.P15, 90 + speed)
-}
 ng.onButtonPressed(ng.NGButton.A, function () {
     if (ng.hasStarted()) {
         if (turning) {
@@ -31,29 +9,27 @@ ng.onButtonPressed(ng.NGButton.A, function () {
         }
     }
 })
-function goLeft() {
+function goForward () {
     basic.showLeds(`
-        . . # # .
-        . # # . .
-        # # . . .
-        . # # . .
-        . . # # .
+        . . # . .
+        . # # # .
+        # # . # #
+        # . . . #
+        . . . . .
         `)
-    offset = 90 - speed / 2
-    pins.servoWritePin(AnalogPin.P14, offset)
-    pins.servoWritePin(AnalogPin.P15, offset)
+    pins.servoWritePin(AnalogPin.P14, 90 + speed)
+    pins.servoWritePin(AnalogPin.P15, 90 - speed)
 }
-function goRight() {
+function goBackward () {
     basic.showLeds(`
-        . # # . .
-        . . # # .
-        . . . # #
-        . . # # .
-        . # # . .
+        . . . . .
+        # . . . #
+        # # . # #
+        . # # # .
+        . . # . .
         `)
-    offset = 90 + speed / 2
-    pins.servoWritePin(AnalogPin.P14, offset)
-    pins.servoWritePin(AnalogPin.P15, offset)
+    pins.servoWritePin(AnalogPin.P14, 90 - speed)
+    pins.servoWritePin(AnalogPin.P15, 90 + speed)
 }
 ng.onButtonPressed(ng.NGButton.B, function () {
     if (ng.hasStarted()) {
@@ -66,25 +42,29 @@ ng.onButtonPressed(ng.NGButton.B, function () {
         }
     }
 })
-function changeDrivingMode(mode: number) {
-    if (mode > 0) {
-        goForward()
-    } else if (mode < 0) {
-        goBackward()
-    } else {
-        goNowhere()
-    }
-}
-function goNowhere() {
+function goLeft () {
     basic.showLeds(`
-        . . . . .
-        . # # # .
-        . # # # .
-        . # # # .
-        . . . . .
+        . . # # .
+        . # # . .
+        # # . . .
+        . # # . .
+        . . # # .
         `)
-    pins.servoWritePin(AnalogPin.P14, 90)
-    pins.servoWritePin(AnalogPin.P15, 90)
+    offset = 90 - speed / 2
+    pins.servoWritePin(AnalogPin.P14, offset)
+    pins.servoWritePin(AnalogPin.P15, offset)
+}
+function goRight () {
+    basic.showLeds(`
+        . # # . .
+        . . # # .
+        . . . # #
+        . . # # .
+        . # # . .
+        `)
+    offset = 90 + speed / 2
+    pins.servoWritePin(AnalogPin.P14, offset)
+    pins.servoWritePin(AnalogPin.P15, offset)
 }
 ng.onButtonPressed(ng.NGButton.AB, function () {
     if (drivingMode == 0) {
@@ -99,7 +79,27 @@ ng.onButtonPressed(ng.NGButton.AB, function () {
     }
     changeDrivingMode(drivingMode)
 })
-function playKermis() {
+function changeDrivingMode (mode: number) {
+    if (mode > 0) {
+        goForward()
+    } else if (mode < 0) {
+        goBackward()
+    } else {
+        goNowhere()
+    }
+}
+function goNowhere () {
+    basic.showLeds(`
+        . . . . .
+        . # # # .
+        . # # # .
+        . # # # .
+        . . . . .
+        `)
+    pins.servoWritePin(AnalogPin.P14, 90)
+    pins.servoWritePin(AnalogPin.P15, 90)
+}
+function playKermis () {
     changeDrivingMode(0)
     if (ng.hasStarted()) {
         ng.neopixels().showRainbow(1, 360)
