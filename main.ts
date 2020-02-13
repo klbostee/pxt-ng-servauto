@@ -99,30 +99,29 @@ function goNowhere () {
     pins.servoWritePin(AnalogPin.P14, 90)
     pins.servoWritePin(AnalogPin.P15, 90)
 }
-function playKermis () {
-    changeDrivingMode(0)
+function toggleLights () {
     if (ng.hasStarted()) {
-        ng.neopixels().showRainbow(1, 360)
-        kermis.playFirstPartOfKermisChorus()
-        basic.pause(100)
-        kermis.playSecondPartOfKermisChorus()
-        ng.neopixels().clear()
-        ng.neopixels().show()
+        goNowhere()
+        if (lightsOn) {
+            ng.neopixels().clear()
+            ng.neopixels().show()
+            lightsOn = false
+        } else {
+            ng.neopixels().showColor(neopixel.colors(NeoPixelColors.White))
+            lightsOn = true
+        }
+        changeDrivingMode(drivingMode)
     }
-    changeDrivingMode(drivingMode)
 }
 input.onGesture(Gesture.Shake, function () {
-    playKermis()
+    toggleLights()
 })
 radio.onReceivedString(function (receivedString) {
-    playKermis()
-})
-kermis.onKermisNotePlayed(function () {
-    ng.neopixels().rotate(1)
-    ng.neopixels().show()
+    toggleLights()
 })
 let offset = 0
 let speed = 0
+let lightsOn = false
 let previousDrivingMode = 0
 let drivingMode = 0
 let turning = false
@@ -131,6 +130,7 @@ turning = false
 drivingMode = 0
 changeDrivingMode(drivingMode)
 previousDrivingMode = -1
+lightsOn = false
 if (ng.hardWasChosen()) {
     speed = 60
 } else {
